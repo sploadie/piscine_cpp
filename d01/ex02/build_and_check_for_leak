@@ -1,0 +1,17 @@
+#!/bin/bash
+
+function echo_green {
+	printf "\e[32m${@}\e[0m\n"
+}
+
+echo_green "Making..."
+make re
+echo_green "Running in background..."
+./when_i_woke_up &
+PID=`ps | grep ./when_i_woke_up | head -n 1 | cut -d" " -f1`
+echo_green "Found PID: $PID"
+echo_green "Running leaks..."
+leaks "$PID"
+echo_green "Stopping..."
+kill "$PID"
+echo_green "Done."
